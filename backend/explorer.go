@@ -7,4 +7,13 @@ package theisland
 type Explorer struct {
 	Eliminated bool
 	MaxSteps   int
+	Team       int
+}
+
+func NewExplorer() *Explorer {
+	return &Explorer{
+		Eliminated: false,
+		MaxSteps:   3,
+		Team:       0,
+	}
 }
