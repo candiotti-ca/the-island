@@ -1,6 +1,8 @@
 package theisland
 
-import "errors"
+import (
+	"errors"
+)
 
 // 1 boat per tile at a time but can share a tile with monsters or explorers.
 // moves only in the water
@@ -19,16 +21,30 @@ func NewBoat() *Boat {
 }
 
 func (boat *Boat) BoardExplorer(explorer *Explorer) error {
-	passengers := len(boat.Explorers)
-	if passengers == 3 {
-		return errors.New("Boat is full")
+	if len(boat.Explorers) == 3 {
+		return errors.New("boat is full")
 	}
 
-	boat.Explorers[passengers-1] = explorer
+	if boat.ExplorerIndex(explorer) != -1 {
+		return errors.New("explorer is already on the boat")
+	}
+
+	boat.Explorers = append(boat.Explorers, explorer)
 	return nil
 }
 
 func (boat *Boat) LandExplorer(explorer *Explorer) error {
+	explorerIndex := boat.ExplorerIndex(explorer)
+
+	if explorerIndex == -1 {
+		return errors.New("explorer is not on the boat")
+	}
+
+	boat.Explorers = append(boat.Explorers[:explorerIndex], boat.Explorers[explorerIndex+1:]...)
+	return nil
+}
+
+func (boat *Boat) ExplorerIndex(explorer *Explorer) int {
 	explorerIndex := -1
 	for index, passenger := range boat.Explorers {
 		if passenger == explorer {
@@ -36,10 +52,5 @@ func (boat *Boat) LandExplorer(explorer *Explorer) error {
 		}
 	}
 
-	if explorerIndex == -1 {
-		return errors.New("Explorer is not on the boat")
-	}
-
-	boat.Explorers = append(boat.Explorers[:explorerIndex], boat.Explorers[explorerIndex+1:]...)
-	return nil
+	return explorerIndex
 }
