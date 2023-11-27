@@ -125,3 +125,21 @@ func TestBoatExplorerIndex_explorerNotOnBoat(t *testing.T) {
 
 	assert.Equal(t, boat.ExplorerIndex(explorer2), -1)
 }
+
+func TestBoatMoveToTile(t *testing.T) {
+	boat := NewBoat()
+	tile := Tile{
+		Type: WATER,
+	}
+
+	require.NoError(t, boat.MoveToTile(tile))
+}
+
+func TestBoatMoveToTile_tileIsNotWater(t *testing.T) {
+	boat := NewBoat()
+	tile := Tile{
+		Type: ROCK,
+	}
+
+	require.ErrorContains(t, boat.MoveToTile(tile), "a boat can move only in water")
+}

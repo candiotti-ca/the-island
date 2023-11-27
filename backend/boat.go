@@ -2,10 +2,11 @@ package theisland
 
 import (
 	"errors"
+	"fmt"
 )
 
 // 1 boat per tile at a time but can share a tile with monsters or explorers.
-// moves only in the water
+// Moves only in the water
 type Boat struct {
 	Eliminated bool
 	MaxSteps   int
@@ -53,4 +54,20 @@ func (boat *Boat) ExplorerIndex(explorer *Explorer) int {
 	}
 
 	return explorerIndex
+}
+
+func (boat Boat) MoveToTile(tile Tile) error {
+	//TODo tile unreachable
+	if tile.Type != WATER {
+		return errors.New("a boat can move only in water")
+	}
+
+	//TODO if tile already contains a boat
+	//TODO if the tile contains whale or seaserpent
+	return nil
+}
+
+// TODO eplorers to string
+func (boat Boat) String() string {
+	return fmt.Sprintf("Boat{Eliminated: %t, MaxSteps: %d, Explorers: mystery...}", boat.Eliminated, boat.MaxSteps)
 }
