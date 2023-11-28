@@ -1,31 +1,25 @@
-<div class="hexagon"></div>
+<script lang="ts">
+	import TileComponent from '../components/TileComponent.svelte';
+	import type { Tile } from '../models/Tile';
 
-<style>
-	.hexagon {
-		margin: 40px;
-		position: relative;
-		width: 92px; /* 46% de 200 */
-		height: 160px; /*80% de 200 */
-		background-color: #fda3b2;
-		cursor: pointer;
-		border: 3px solid black;
-	}
+	let tiles: Tile[] = [
+		{ x: 0, y: 0 },
+		{ x: 0, y: 1 },
+		{ x: 0, y: 2 },
+		{ x: 0, y: 3 },
+		{ x: 1, y: 0 },
+		{ x: 1, y: 1 },
+		{ x: 1, y: 2 },
+		{ x: 1, y: 3 },
+		{ x: 2, y: 0 },
+		{ x: 2, y: 1 },
+		{ x: 2, y: 2 },
+		{ x: 2, y: 3 }
+	];
+</script>
 
-	.hexagon:before,
-	.hexagon:after {
-		position: absolute;
-		content: '';
-		background: inherit;
-		height: 100%;
-		width: 100%;
-		transform-origin: center;
-		border-top: 3px solid black;
-		border-bottom: 3px solid black;
-	}
-	.hexagon:before {
-		transform: rotateZ(60deg);
-	}
-	.hexagon:after {
-		transform: rotateZ(-60deg);
-	}
-</style>
+<div class="bg-black h-[500px] relative">
+	{#each tiles as tile}
+		<TileComponent {...tile} />
+	{/each}
+</div>
