@@ -1,4 +1,4 @@
-package theisland
+package main
 
 // Can share tile with other explorers. Can move on the water or on the land.
 // An explorer that have left the land cannot go back

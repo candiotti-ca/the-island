@@ -1,4 +1,4 @@
-package theisland
+package main
 
 import (
 	"fmt"
@@ -57,22 +57,3 @@ func (l Layout) CubeRing(direction hexgrid.Direction, radius int) {
 func SetTileTypeToWater(tile *Tile) {
 	tile.Type = WATER
 }
-
-type Tile struct {
-	Type TileType
-}
-
-func NewTile() Tile {
-	return Tile{
-		Type: WATER,
-	}
-}
-
-type TileType int
-
-const (
-	WATER TileType = iota + 1
-	SAND
-	GRASS
-	ROCK
-)

@@ -1,4 +1,4 @@
-package theisland
+package main
 
 import "fmt"
 
