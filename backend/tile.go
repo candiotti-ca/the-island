@@ -20,3 +20,15 @@ const (
 	GRASS
 	ROCK
 )
+
+func (t TileType) String() string {
+	switch t {
+	case SAND:
+		return "SAND"
+	case GRASS:
+		return "GRASS"
+	case ROCK:
+		return "ROCK"
+	}
+	return "WATER"
+}
