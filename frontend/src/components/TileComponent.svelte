@@ -9,6 +9,10 @@
 	export let y: number = 0;
 	export let type: TileType = TileType.WATER;
 
+	function onClick(): void {
+		console.log('X:', x, 'Y:', y);
+	}
+
 	function getTop(): number {
 		const middleOfTheMap = 250;
 		const border = 1.7;
@@ -38,15 +42,15 @@
 	}
 </script>
 
-<div
+<button
 	class="tile"
 	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background-color:{getBackground()};"
-></div>
+	on:click={onClick}
+></button>
 
 <style>
 	.tile {
 		position: absolute;
-		cursor: pointer;
 	}
 
 	.tile:before,
@@ -56,7 +60,8 @@
 		background: inherit;
 		height: 100%;
 		width: 100%;
-		transform-origin: center;
+		left: 0%;
+		top: 0%;
 	}
 
 	.tile:before {

@@ -3,20 +3,7 @@
 	import TileComponent from '../components/TileComponent.svelte';
 	import type { Tile } from '../models/Tile';
 
-	let tiles: Tile[] = [
-		// { x: 0, y: 0 },
-		// { x: 0, y: 1 },
-		// { x: 0, y: 2 },
-		// { x: 0, y: 3 },
-		// { x: 1, y: 0 },
-		// { x: 1, y: 1 },
-		// { x: 1, y: 2 },
-		// { x: 1, y: 3 },
-		// { x: 2, y: 0 },
-		// { x: 2, y: 1 },
-		// { x: 2, y: 2 },
-		// { x: 2, y: 3 }
-	];
+	let tiles: Tile[] = [];
 
 	onMount(async () => {
 		fetch('http://localhost:8080/map')
@@ -29,7 +16,7 @@
 	});
 </script>
 
-<div class="bg-black h-[500px] relative">
+<div class="bg-black h-[600px] relative">
 	{#each tiles as tile}
 		<TileComponent {...tile} />
 	{/each}
