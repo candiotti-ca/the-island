@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import TileComponent from '../components/TileComponent.svelte';
-	import type { Tile } from '../models/Tile';
+	import { Tile, type BackendTile } from '../models/Tile';
 
-	export let data;
 	let tiles: Tile[] = [
 		// { x: 0, y: 0 },
 		// { x: 0, y: 1 },
@@ -20,8 +19,14 @@
 	];
 
 	onMount(async () => {
-		tiles = data.tiles;
-		console.log(tiles);
+		fetch('http://localhost:8080/map')
+			.then((response) => response.json())
+			.then((tiles: BackendTile[]) => tiles.map((tile) => new Tile(tile)))
+			.then((param: Tile[]) => {
+				tiles = param;
+				console.log(tiles);
+			})
+			.catch((error) => console.error(error));
 	});
 </script>
 

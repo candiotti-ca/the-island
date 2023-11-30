@@ -3,13 +3,14 @@ package main
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
 
-	// router.Use(cors.Default())
+	router.Use(cors.Default())
 	router.GET("/map", getMap)
 
 	err := router.Run("localhost:8080")
