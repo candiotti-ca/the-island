@@ -1,9 +1,9 @@
 package main
 
 type Tile struct {
-	Type TileType
-	X    int
-	Y    int
+	Type TileType `json:"type"`
+	X    int      `json:"x"`
+	Y    int      `json:"y"`
 }
 
 func NewTile() Tile {

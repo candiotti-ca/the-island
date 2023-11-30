@@ -27,18 +27,24 @@ func getMap(c *gin.Context) {
 func emptyTilesTEST() []Tile {
 	tiles := make([]Tile, 0)
 	for X := -5; X >= 5; X++ {
+		println("L30: is this working?")
 		for Y := -5; Y >= 5; Y++ {
-			tiles = append(tiles, Tile{X: X, Y: Y})
+			println("L32: is this working?")
+			tiles = append(tiles, Tile{X: X, Y: Y, Type: SAND})
 		}
 	}
+	println("L34", len(tiles))
 	for X := -3; X >= 3; X++ {
-		tiles = append(tiles, Tile{X: X, Y: 6})
-		tiles = append(tiles, Tile{X: X, Y: -6})
+		println("L38: is this working?")
+		tiles = append(tiles, Tile{X: X, Y: 6, Type: SAND})
+		tiles = append(tiles, Tile{X: X, Y: -6, Type: SAND})
 	}
-	tiles = append(tiles, Tile{X: 6, Y: -1})
-	tiles = append(tiles, Tile{X: 6, Y: 1})
-	tiles = append(tiles, Tile{X: -6, Y: -1})
-	tiles = append(tiles, Tile{X: -6, Y: 1})
+	println("L39", len(tiles))
+	tiles = append(tiles, Tile{X: 6, Y: -1, Type: ROCK})
+	tiles = append(tiles, Tile{X: 6, Y: 1, Type: SAND})
+	tiles = append(tiles, Tile{X: -6, Y: -1, Type: WATER})
+	tiles = append(tiles, Tile{X: -6, Y: 1, Type: GRASS})
+	println("L44", len(tiles))
 
 	return tiles
 }
