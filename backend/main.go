@@ -3,25 +3,21 @@ package main
 import (
 	"net/http"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-	router := gin.Default()
+	e := echo.New()
+	e.Use(middleware.CORS())
 
-	router.Use(cors.Default())
-	router.GET("/map", getMap)
+	e.GET("/map", generateMap)
 
-	err := router.Run("localhost:8080")
-	if err != nil {
-		println(err)
-		panic("router not started")
-	}
+	e.Logger.Fatal(e.Start(":8080"))
 }
 
-func getMap(c *gin.Context) {
-	c.JSON(http.StatusOK, emptyTilesTEST())
+func generateMap(c echo.Context) error {
+	return c.JSON(http.StatusOK, emptyTilesTEST())
 }
 
 func emptyTilesTEST() []Tile {
