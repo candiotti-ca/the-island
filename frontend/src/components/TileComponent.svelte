@@ -6,11 +6,11 @@
 	export let x: number = 0;
 	export let y: number = 0;
 
-	let top = 20 + y * height * 1.7;
-	let left = (y % 2 == 0 ? 1 : 0.45) * width + x * width + x * 4;
+	let top = 250 + y * height * 1.7;
+	let left = (y % 2 == 0 ? 1 : 0.45) * width + x * width + x * 4 + 600;
 </script>
 
-<div class="tile w-[{width}px] h-[{height}px]" style="top:{top}px; left:{left}px;"></div>
+<div class="tile" style="width:{width}px; height:{height}px; top:{top}px; left:{left}px;"></div>
 
 <style>
 	.tile {
