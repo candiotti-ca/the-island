@@ -1,14 +1,7 @@
-export interface BackendTile {
-    X: number;
-    Y: number;
-}
+import type { TileType } from "./TileType";
 
-export class Tile {
+export interface Tile {
     x: number;
     y: number;
-
-    constructor(backend: BackendTile) {
-        this.x = backend.X;
-        this.y = backend.Y;
-    }
+    type: TileType;
 }
