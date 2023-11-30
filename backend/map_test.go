@@ -1,15 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"testing"
-
-	"github.com/falanger/hexgrid"
 )
 
 func TestLayoutCubeRing(t *testing.T) {
 	t.Parallel()
 
-	m := NewMap()
-
-	m.layout.CubeRing(hexgrid.DirectionN, 3)
+	for k, v := range initTiles(1) {
+		fmt.Printf("(%d,%d): %s\n", k.Q, k.R, v)
+	}
 }
