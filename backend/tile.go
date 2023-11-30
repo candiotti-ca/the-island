@@ -1,4 +1,4 @@
-package main
+package theisland
 
 type Tile struct {
 	Type TileType `json:"type"`

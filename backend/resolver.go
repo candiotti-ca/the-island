@@ -1,4 +1,4 @@
-package main
+package theisland
 
 func ResolveInteractions(tile Tile) {
 

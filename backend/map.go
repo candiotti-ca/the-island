@@ -1,8 +1,8 @@
-package main
+package theisland
 
 import (
 	"errors"
-	"maps"
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -23,9 +23,11 @@ type Map struct {
 	tileNumberSand  int
 }
 
-func (m Map) GetTiles() map[Coord]Tile {
-	cp := make(map[Coord]Tile, 129)
-	maps.Copy(cp, m.tiles)
+func (m Map) GetTiles() map[string]Tile {
+	cp := make(map[string]Tile, 129)
+	for coord, tile := range m.tiles {
+		cp[coord.String()] = tile
+	}
 	return cp
 }
 
@@ -60,6 +62,10 @@ func (m *Map) RemoveLandTile(coord Coord) (Tile, error) {
 
 type Coord struct {
 	Q, R int
+}
+
+func (c Coord) String() string {
+	return fmt.Sprintf("(%d,%d)", c.Q, c.R)
 }
 
 func NewMap(seed *int64) Map {
