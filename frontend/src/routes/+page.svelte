@@ -2,16 +2,26 @@
 	import { onMount } from 'svelte';
 	import TileComponent from '../components/TileComponent.svelte';
 	import type { Tile } from '../models/Tile';
+	import type { TileType } from '../models/TileType';
 
 	let tiles: Tile[] = [];
 
 	onMount(async () => {
 		fetch('http://localhost:8080/map')
 			.then((response) => response.json())
-			.then((param: Tile[]) => {
-				tiles = param;
-				console.log(tiles);
-			})
+			.then((body) =>
+				Object.entries(body).map((entry) => {
+					const coord: number[] = JSON.parse(entry[0]);
+					const type: TileType = (entry[1] as any).type;
+
+					return {
+						x: coord[0],
+						y: coord[1],
+						type
+					};
+				})
+			)
+			.then((param: Tile[]) => (tiles = param))
 			.catch((error) => console.error(error));
 	});
 </script>

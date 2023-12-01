@@ -45,6 +45,7 @@
 <button
 	class="tile"
 	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background-color:{getBackground()};"
+	title="[{x},{y}]"
 	on:click={onClick}
 ></button>
 
