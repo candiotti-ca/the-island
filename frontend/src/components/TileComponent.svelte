@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { TileType } from '../models/TileType';
+	import waterTexture from '../assets/water.jpg';
+	import grassTexture from '../assets/grass.jpg';
+	import rockTexture from '../assets/rock.jpg';
+	import sandTexture from '../assets/sand.jpg';
 
 	const size = 50;
 	const width = size * 0.8;
@@ -28,23 +32,23 @@
 		return offset + x * width + border + middleOfTheMap;
 	}
 
-	function getBackground(): string {
+	function getBackgroundUrl(): string {
 		switch (type) {
 			case TileType.GRASS:
-				return 'green';
+				return grassTexture;
 			case TileType.ROCK:
-				return 'gray';
+				return rockTexture;
 			case TileType.SAND:
-				return 'yellow';
+				return sandTexture;
 			default:
-				return 'blue';
+				return waterTexture;
 		}
 	}
 </script>
 
 <button
 	class="tile"
-	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background-color:{getBackground()};"
+	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background: url({getBackgroundUrl()});"
 	title="[{x},{y}]"
 	on:click={onClick}
 ></button>
