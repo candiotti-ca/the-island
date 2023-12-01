@@ -15,8 +15,8 @@
 					const type: TileType = (entry[1] as any).type;
 
 					return {
-						x: coord[0],
-						y: coord[1],
+						q: coord[0],
+						r: coord[1],
 						type
 					};
 				})

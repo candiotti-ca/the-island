@@ -11,8 +11,8 @@
 	const width = size * 0.8;
 	const height = size * 0.46;
 
-	export let x: number = 0;
-	export let y: number = 0;
+	export let q: number = 0;
+	export let r: number = 0;
 	export let type: TileType = TileType.WATER;
 
 	function onClick(): void {
@@ -24,7 +24,7 @@
 		const middleOfTheMap = 250;
 		const border = 1.6;
 
-		return middleOfTheMap + y * height * border;
+		return middleOfTheMap + r * height * border;
 	}
 
 	/**
@@ -36,12 +36,12 @@
 		const middleOfTheMap = 600;
 
 		let offset = width;
-		if (y % 2 != 0) {
+		if (r % 2 != 0) {
 			offset = ($mapType == MapType.POINTY_ODD ? 1.55 : 0.45) * width;
 		}
-		const border = x * 3;
+		const border = q * 3;
 
-		return offset + x * width + border + middleOfTheMap;
+		return offset + q * width + border + middleOfTheMap;
 	}
 
 	function getBackgroundUrl(): string {
@@ -61,7 +61,7 @@
 <button
 	class="tile"
 	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background: url({getBackgroundUrl()}); z-index:{type};"
-	title="[{x},{y}]"
+	title="[{q},{r}]"
 	on:click={onClick}
 ></button>
 
