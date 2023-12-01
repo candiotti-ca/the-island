@@ -14,20 +14,28 @@
 	export let type: TileType = TileType.WATER;
 
 	function onClick(): void {
-		console.log('X:', x, 'Y:', y);
+		console.log('type:', type);
 	}
 
 	function getTop(): number {
+		//arbitrary center of the screen
 		const middleOfTheMap = 250;
-		const border = 1.7;
+		const border = 1.6;
 
 		return middleOfTheMap + y * height * border;
 	}
 
+	/**
+	 * Computes pixel coordinates of the current tile. It depends whether the map is
+	 * pointy top or flat top and whether the map is odd or even.
+	 */
 	function getLeft(): number {
+		//arbitrary center of the screen
 		const middleOfTheMap = 600;
-		const offset = (y % 2 == 0 ? 1 : 0.45) * width;
-		const border = x * 4;
+
+		//offset is 0.45 if the map is even ; and 1.55 if the map is odd
+		const offset = (y % 2 == 0 ? 1 : 1.55) * width;
+		const border = x * 3;
 
 		return offset + x * width + border + middleOfTheMap;
 	}
@@ -48,7 +56,7 @@
 
 <button
 	class="tile"
-	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background: url({getBackgroundUrl()});"
+	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background: url({getBackgroundUrl()}); z-index:{type};"
 	title="[{x},{y}]"
 	on:click={onClick}
 ></button>
