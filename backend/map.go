@@ -65,7 +65,7 @@ type Coord struct {
 }
 
 func (c Coord) String() string {
-	return fmt.Sprintf("(%d,%d)", c.Q, c.R)
+	return fmt.Sprintf("[%d,%d]", c.Q, c.R)
 }
 
 func NewMap(seed *int64) Map {
