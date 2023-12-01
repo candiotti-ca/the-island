@@ -20,11 +20,9 @@
 	}
 
 	function getTop(): number {
-		//arbitrary center of the screen
 		const middleOfTheMap = 250;
-		const border = 1.6;
 
-		return middleOfTheMap + r * height * border;
+		return height * ((3 / 2) * r) + middleOfTheMap;
 	}
 
 	/**
@@ -32,16 +30,9 @@
 	 * pointy top or flat top and whether the map is odd or even.
 	 */
 	function getLeft(): number {
-		//arbitrary center of the screen
 		const middleOfTheMap = 600;
 
-		let offset = width;
-		if (r % 2 != 0) {
-			offset = ($mapType == MapType.POINTY_ODD ? 1.55 : 0.45) * width;
-		}
-		const border = q * 3;
-
-		return offset + q * width + border + middleOfTheMap;
+		return height * (Math.sqrt(3) * q + (Math.sqrt(3) / 2) * r) + middleOfTheMap;
 	}
 
 	function getBackgroundUrl(): string {

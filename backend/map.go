@@ -117,7 +117,7 @@ func initTiles(seed int64) map[Coord]Tile {
 
 	sixthRing := singleRing(direction, 6)
 	for _, hex := range sixthRing {
-		if hex.Q == 0 && (hex.R == 6 || hex.R == -6) {
+		if hex.R == 0 && (hex.Q == 6 || hex.Q == -6) {
 			continue
 		}
 		tiles[Coord{Q: hex.Q, R: hex.R}] = Tile{
@@ -125,14 +125,14 @@ func initTiles(seed int64) map[Coord]Tile {
 		}
 	}
 
-	tiles[Coord{Q: 4, R: 3}] = Tile{Type: WATER}
-	tiles[Coord{Q: 5, R: 2}] = Tile{Type: WATER}
-	tiles[Coord{Q: 4, R: -7}] = Tile{Type: WATER}
-	tiles[Coord{Q: 5, R: -7}] = Tile{Type: WATER}
-	tiles[Coord{Q: -4, R: -3}] = Tile{Type: WATER}
-	tiles[Coord{Q: -5, R: -2}] = Tile{Type: WATER}
-	tiles[Coord{Q: -4, R: -3}] = Tile{Type: WATER}
-	tiles[Coord{Q: -5, R: -2}] = Tile{Type: WATER}
+	tiles[Coord{Q: 2, R: 5}] = Tile{Type: WATER}
+	tiles[Coord{Q: 3, R: 4}] = Tile{Type: WATER}
+	tiles[Coord{Q: 7, R: -5}] = Tile{Type: WATER}
+	tiles[Coord{Q: 7, R: -4}] = Tile{Type: WATER}
+	tiles[Coord{Q: -3, R: -4}] = Tile{Type: WATER}
+	tiles[Coord{Q: -2, R: -5}] = Tile{Type: WATER}
+	tiles[Coord{Q: -7, R: 5}] = Tile{Type: WATER}
+	tiles[Coord{Q: -7, R: 4}] = Tile{Type: WATER}
 
 	return tiles
 }
