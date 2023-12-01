@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { TileType } from '../models/TileType';
-	import waterTexture from '../assets/water.jpg';
 	import grassTexture from '../assets/grass.jpg';
 	import rockTexture from '../assets/rock.jpg';
 	import sandTexture from '../assets/sand.jpg';
+	import waterTexture from '../assets/water.jpg';
+	import { MapType } from '../models/MapType';
+	import { TileType } from '../models/TileType';
+	import { mapType } from '../store/store';
 
 	const size = 50;
 	const width = size * 0.8;
@@ -33,8 +35,10 @@
 		//arbitrary center of the screen
 		const middleOfTheMap = 600;
 
-		//offset is 0.45 if the map is even ; and 1.55 if the map is odd
-		const offset = (y % 2 == 0 ? 1 : 1.55) * width;
+		let offset = width;
+		if (y % 2 != 0) {
+			offset = ($mapType == MapType.POINTY_ODD ? 1.55 : 0.45) * width;
+		}
 		const border = x * 3;
 
 		return offset + x * width + border + middleOfTheMap;
