@@ -8,6 +8,8 @@ import (
 )
 
 func TestBoatBoardExplorer_explorerAlreadyOnBoat(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 	explorer := NewExplorer()
 
@@ -25,6 +27,8 @@ func TestBoatBoardExplorer_explorerAlreadyOnBoat(t *testing.T) {
 }
 
 func TestBoatBoardExplorer(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 	explorer := NewExplorer()
 
@@ -37,6 +41,8 @@ func TestBoatBoardExplorer(t *testing.T) {
 }
 
 func TestBoatBoardExplorer_boatIsFull(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 
 	explorer1 := NewExplorer()
@@ -64,6 +70,8 @@ func TestBoatBoardExplorer_boatIsFull(t *testing.T) {
 }
 
 func TestBoatLandExplorer(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 	explorer := NewExplorer()
 
@@ -85,6 +93,8 @@ func TestBoatLandExplorer_boatIsEmpty(t *testing.T) {
 }
 
 func TestBoatLandExplorer_explorerNotOnBoat(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 	explorer1 := NewExplorer()
 	explorer2 := NewExplorer()
@@ -99,6 +109,8 @@ func TestBoatLandExplorer_explorerNotOnBoat(t *testing.T) {
 }
 
 func TestBoatExplorerIndex_explorerOnBoat(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 	explorer1 := NewExplorer()
 	explorer2 := NewExplorer()
@@ -113,6 +125,8 @@ func TestBoatExplorerIndex_explorerOnBoat(t *testing.T) {
 }
 
 func TestBoatExplorerIndex_explorerNotOnBoat(t *testing.T) {
+	t.Parallel()
+
 	boat := NewBoat()
 	explorer1 := NewExplorer()
 	explorer2 := NewExplorer()
@@ -124,22 +138,4 @@ func TestBoatExplorerIndex_explorerNotOnBoat(t *testing.T) {
 	}
 
 	assert.Equal(t, boat.ExplorerIndex(explorer2), -1)
-}
-
-func TestBoatMoveToTile(t *testing.T) {
-	boat := NewBoat()
-	tile := Tile{
-		Type: WATER,
-	}
-
-	require.NoError(t, boat.MoveToTile(tile))
-}
-
-func TestBoatMoveToTile_tileIsNotWater(t *testing.T) {
-	boat := NewBoat()
-	tile := Tile{
-		Type: ROCK,
-	}
-
-	require.ErrorContains(t, boat.MoveToTile(tile), "a boat can move only in water")
 }

@@ -1,7 +1,16 @@
 package theisland
 
 type Tile struct {
-	Type TileType `json:"type"`
+	Type       TileType    `json:"type"`
+	Explorers  []*Explorer `json:"explorers"`
+	Boat       *Boat       `json:"boat"`
+	Shark      *Shark      `json:"shark"`
+	Whale      *Whale      `json:"whale"`
+	SeaSerpent *SeaSerpent `json:"seaSerpent"`
+}
+
+func NewTile(tileType TileType) Tile {
+	return Tile{Type: tileType, Explorers: make([]*Explorer, 0)}
 }
 
 type TileType int

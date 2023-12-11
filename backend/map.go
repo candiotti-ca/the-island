@@ -67,6 +67,32 @@ func (m *Map) RemoveLandTile(coord Coord) (Tile, error) {
 	return tile, nil
 }
 
+func (m Map) MoveBoat(from Coord, to Coord) (Tile, error) {
+	originTile, present := m.tiles[from]
+	if !present {
+		return Tile{}, errors.New("origin coordinates outside the map")
+	}
+
+	if originTile.Boat == nil {
+		return Tile{}, errors.New("no boat on this tile")
+	}
+
+	//TODo tile unreachable
+
+	destinationTile, present := m.tiles[to]
+	if !present {
+		return Tile{}, errors.New("destination coordinates outside the map")
+	}
+	if destinationTile.Type != WATER {
+		return Tile{}, errors.New("a boat can move only in water")
+	}
+	if destinationTile.Boat != nil {
+		return Tile{}, errors.New("destination tile already has a boat")
+	}
+
+	return Tile{}, nil
+}
+
 type Coord struct {
 	Q, R int
 }
@@ -120,9 +146,7 @@ func initTiles(seed int64) map[Coord]Tile {
 		} else {
 			tileType = WATER
 		}
-		tiles[Coord{Q: hex.Q, R: hex.R}] = Tile{
-			Type: tileType,
-		}
+		tiles[Coord{Q: hex.Q, R: hex.R}] = NewTile(tileType)
 	}
 
 	sixthRing := singleRing(direction, 6)
@@ -130,19 +154,17 @@ func initTiles(seed int64) map[Coord]Tile {
 		if hex.R == 0 && (hex.Q == 6 || hex.Q == -6) {
 			continue
 		}
-		tiles[Coord{Q: hex.Q, R: hex.R}] = Tile{
-			Type: WATER,
-		}
+		tiles[Coord{Q: hex.Q, R: hex.R}] = NewTile(WATER)
 	}
 
-	tiles[Coord{Q: 2, R: 5}] = Tile{Type: WATER}
-	tiles[Coord{Q: 3, R: 4}] = Tile{Type: WATER}
-	tiles[Coord{Q: 7, R: -5}] = Tile{Type: WATER}
-	tiles[Coord{Q: 7, R: -4}] = Tile{Type: WATER}
-	tiles[Coord{Q: -3, R: -4}] = Tile{Type: WATER}
-	tiles[Coord{Q: -2, R: -5}] = Tile{Type: WATER}
-	tiles[Coord{Q: -7, R: 5}] = Tile{Type: WATER}
-	tiles[Coord{Q: -7, R: 4}] = Tile{Type: WATER}
+	tiles[Coord{Q: 2, R: 5}] = NewTile(WATER)
+	tiles[Coord{Q: 3, R: 4}] = NewTile(WATER)
+	tiles[Coord{Q: 7, R: -5}] = NewTile(WATER)
+	tiles[Coord{Q: 7, R: -4}] = NewTile(WATER)
+	tiles[Coord{Q: -3, R: -4}] = NewTile(WATER)
+	tiles[Coord{Q: -2, R: -5}] = NewTile(WATER)
+	tiles[Coord{Q: -7, R: 5}] = NewTile(WATER)
+	tiles[Coord{Q: -7, R: 4}] = NewTile(WATER)
 
 	return tiles
 }

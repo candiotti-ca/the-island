@@ -1,7 +1,6 @@
 package theisland
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
@@ -9,13 +8,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLayoutCubeRing(t *testing.T) {
-	t.Parallel()
+// func TestLayoutCubeRing(t *testing.T) {
+// 	t.Parallel()
 
-	for k, v := range initTiles(1) {
-		fmt.Printf("(%d,%d): %s\n", k.Q, k.R, v)
-	}
-}
+// 	for k, v := range initTiles(1) {
+// 		fmt.Printf("(%d,%d): %s\n", k.Q, k.R, v)
+// 	}
+// }
 
 func TestMapCreation(t *testing.T) {
 	t.Parallel()
@@ -174,4 +173,89 @@ func TestMapRemoveLandTile_rockTile(t *testing.T) {
 	tile, err := m.RemoveLandTile(coord)
 	require.NoError(t, err)
 	assert.Equal(t, WATER, tile.Type)
+}
+
+func TestBoatMoveToTile_unknownOriginTile(t *testing.T) {
+	t.Parallel()
+
+	m := Map{
+		tiles:           map[Coord]Tile{},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveBoat(Coord{Q: 1, R: 1}, Coord{Q: 2, R: 2})
+	require.ErrorContains(t, err, "origin coordinates outside the map")
+}
+
+func TestBoatMoveToTile_noBoatOnTile(t *testing.T) {
+	t.Parallel()
+
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveBoat(orgCoord, Coord{Q: 2, R: 2})
+	require.ErrorContains(t, err, "no boat on this tile")
+}
+
+func TestBoatMoveToTile_unknownDestinationTile(t *testing.T) {
+	t.Parallel()
+
+	boat := NewBoat()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER, Boat: boat}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveBoat(orgCoord, Coord{Q: 2, R: 2})
+	require.ErrorContains(t, err, "destination coordinates outside the map")
+}
+
+func TestBoatMoveToTile_destinationTileIsNotWater(t *testing.T) {
+	t.Parallel()
+
+	boat := NewBoat()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER, Boat: boat}
+	destCoord := Coord{Q: 2, R: 2}
+	destTile := Tile{Type: ROCK}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile, destCoord: destTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveBoat(orgCoord, destCoord)
+	require.ErrorContains(t, err, "a boat can move only in water")
+}
+
+func TestBoatMoveToTile_alreadyABoatOnDestinationTile(t *testing.T) {
+	t.Parallel()
+
+	boat := NewBoat()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER, Boat: boat}
+	destCoord := Coord{Q: 2, R: 2}
+	destTile := Tile{Type: WATER, Boat: boat}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile, destCoord: destTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveBoat(orgCoord, destCoord)
+	require.ErrorContains(t, err, "destination tile already has a boat")
 }
