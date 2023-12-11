@@ -3,9 +3,7 @@
 	import rockTexture from '../assets/rock.jpg';
 	import sandTexture from '../assets/sand.jpg';
 	import waterTexture from '../assets/water.jpg';
-	import { MapType } from '../models/MapType';
 	import { TileType } from '../models/TileType';
-	import { mapType } from '../store/store';
 
 	const size = 50;
 	const width = size * 0.8;
@@ -15,27 +13,23 @@
 	export let r: number = 0;
 	export let type: TileType = TileType.WATER;
 
-	function onClick(): void {
-		console.log('type:', type);
-	}
-
-	function getTop(): number {
+	$: top = () => {
 		const middleOfTheMap = 250;
 
 		return height * ((3 / 2) * r) + middleOfTheMap;
-	}
+	};
 
 	/**
 	 * Computes pixel coordinates of the current tile. It depends whether the map is
 	 * pointy top or flat top and whether the map is odd or even.
 	 */
-	function getLeft(): number {
+	$: left = () => {
 		const middleOfTheMap = 600;
 
 		return height * (Math.sqrt(3) * q + (Math.sqrt(3) / 2) * r) + middleOfTheMap;
-	}
+	};
 
-	function getBackgroundUrl(): string {
+	$: backgroundUrl = () => {
 		switch (type) {
 			case TileType.GRASS:
 				return grassTexture;
@@ -46,14 +40,28 @@
 			default:
 				return waterTexture;
 		}
-	}
+	};
+
+	$: altBackground = () => {
+		switch (type) {
+			case TileType.GRASS:
+				return 'green';
+			case TileType.ROCK:
+				return 'gray';
+			case TileType.SAND:
+				return 'yellow';
+			default:
+				return 'blue';
+		}
+	};
 </script>
 
 <button
 	class="tile"
-	style="width:{width}px; height:{height}px; top:{getTop()}px; left:{getLeft()}px; background: url({getBackgroundUrl()}); z-index:{type};"
+	style="width:{width}px; height:{height}px; top:{top()}px; left:{left()}px; background: url({backgroundUrl()}); background-color: {altBackground()}; z-index:{type};"
 	title="[{q},{r}]"
-	on:click={onClick}
+	on:click
+	data-testid="tile"
 ></button>
 
 <style>

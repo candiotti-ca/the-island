@@ -24,10 +24,30 @@
 			.then((param: Tile[]) => (tiles = param))
 			.catch((error) => console.error(error));
 	});
+
+	function flipTile(tile: Tile): void {
+		fetch(`http://localhost:8080/tiles/${tile.q}/${tile.r}/flip`, { method: 'PATCH' })
+			.then((response) => {
+				if (response.status == 200) {
+					return response.json();
+				}
+				return Promise.reject(new Error('server does not return 200'));
+			})
+			.then((newType) => {
+				tiles = tiles.map((t) => {
+					if (t.q == tile.q && t.r == tile.r) {
+						t.type = newType;
+					}
+
+					return t;
+				});
+			})
+			.catch((error) => console.error(error));
+	}
 </script>
 
 <div class="bg-black h-[600px] relative">
 	{#each tiles as tile}
-		<TileComponent {...tile} />
+		<TileComponent {...tile} on:click={() => flipTile(tile)} />
 	{/each}
 </div>

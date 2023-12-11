@@ -23,6 +23,10 @@ type Map struct {
 	tileNumberSand  int
 }
 
+func (m Map) String() string {
+	return fmt.Sprintf("rock tiles: %d, sand tiles: %d, grass tiles: %d", m.tileNumberRock, m.tileNumberSand, m.tileNumberGrass)
+}
+
 func (m Map) GetTiles() map[string]Tile {
 	cp := make(map[string]Tile, 129)
 	for coord, tile := range m.tiles {
@@ -49,7 +53,7 @@ func (m *Map) RemoveLandTile(coord Coord) (Tile, error) {
 		}
 		m.tileNumberGrass -= 1
 	case ROCK:
-		if m.tileNumberSand != 0 && m.tileNumberRock != 0 {
+		if m.tileNumberSand != 0 || m.tileNumberGrass != 0 {
 			return Tile{}, errors.New("remove sand and grass tiles first")
 		}
 		m.tileNumberRock -= 1
@@ -82,7 +86,10 @@ func NewMap(seed *int64) Map {
 		// 	Size:        hexgrid.Point{X: 15, Y: 15},
 		// 	Orientation: hexgrid.OrientationPointy,
 		// },
-		tiles: initTiles(s),
+		tiles:           initTiles(s),
+		tileNumberRock:  initTileNumberRock,
+		tileNumberSand:  initTileNumberSand,
+		tileNumberGrass: initTileNumberGrass,
 	}
 }
 
