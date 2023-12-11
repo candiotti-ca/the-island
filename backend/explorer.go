@@ -11,11 +11,11 @@ type Explorer struct {
 	Team       int
 }
 
-func NewExplorer() *Explorer {
+func NewExplorer(id int) *Explorer {
 	return &Explorer{
 		Eliminated: false,
 		MaxSteps:   3,
 		Team:       0,
-		Id:         1,
+		Id:         id,
 	}
 }

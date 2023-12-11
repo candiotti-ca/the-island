@@ -1,5 +1,10 @@
 package theisland
 
+import (
+	"errors"
+	"slices"
+)
+
 type Tile struct {
 	Type       TileType    `json:"type"`
 	Explorers  []*Explorer `json:"explorers"`
@@ -13,12 +18,18 @@ func NewTile(tileType TileType) Tile {
 	return Tile{Type: tileType, Explorers: make([]*Explorer, 0)}
 }
 
-func (t *Tile) RemoveExplorer(id int) {
+func (t *Tile) RemoveExplorer(id int) (*Explorer, error) {
 	index := -1
+	var expToDelete *Explorer
 	for i, explorer := range t.Explorers {
 		if explorer.Id == id {
 			index = i
+			expToDelete = explorer
 		}
+	}
+
+	if index == -1 {
+		return nil, errors.New("explorer not present on the tile")
 	}
 
 	if index > -1 {
@@ -30,10 +41,17 @@ func (t *Tile) RemoveExplorer(id int) {
 			t.Explorers = t.Explorers[:length-1]
 		}
 	}
+
+	return expToDelete, nil
 }
 
-func (t *Tile) AddExplorer(explorer *Explorer) {
+func (t *Tile) AddExplorer(explorer *Explorer) error {
+	if slices.Contains(t.Explorers, explorer) {
+		return errors.New("explorer already on the tile")
+	}
+
 	t.Explorers = append(t.Explorers, explorer)
+	return nil
 }
 
 func (t *Tile) GetExplorer(id int) *Explorer {

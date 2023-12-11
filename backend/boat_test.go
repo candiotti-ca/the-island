@@ -11,7 +11,7 @@ func TestBoatBoardExplorer_explorerAlreadyOnBoat(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 
 	assert.Len(t, boat.Explorers, 0)
 
@@ -30,7 +30,7 @@ func TestBoatBoardExplorer(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 
 	assert.Len(t, boat.Explorers, 0)
 
@@ -45,22 +45,22 @@ func TestBoatBoardExplorer_boatIsFull(t *testing.T) {
 
 	boat := NewBoat()
 
-	explorer1 := NewExplorer()
+	explorer1 := NewExplorer(1)
 	err := boat.BoardExplorer(explorer1)
 	require.NoError(t, err)
 	assert.Len(t, boat.Explorers, 1)
 
-	explorer2 := NewExplorer()
+	explorer2 := NewExplorer(1)
 	err = boat.BoardExplorer(explorer2)
 	require.NoError(t, err)
 	assert.Len(t, boat.Explorers, 2)
 
-	explorer3 := NewExplorer()
+	explorer3 := NewExplorer(1)
 	err = boat.BoardExplorer(explorer3)
 	require.NoError(t, err)
 	assert.Len(t, boat.Explorers, 3)
 
-	explorer4 := NewExplorer()
+	explorer4 := NewExplorer(1)
 	err = boat.BoardExplorer(explorer4)
 	require.ErrorContains(t, err, "boat is full")
 
@@ -73,7 +73,7 @@ func TestBoatLandExplorer(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 
 	err := boat.BoardExplorer(explorer)
 	require.NoError(t, err)
@@ -86,7 +86,7 @@ func TestBoatLandExplorer(t *testing.T) {
 
 func TestBoatLandExplorer_boatIsEmpty(t *testing.T) {
 	boat := NewBoat()
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 
 	err := boat.LandExplorer(explorer)
 	require.Error(t, err, "explorer is not on the boat")
@@ -96,8 +96,8 @@ func TestBoatLandExplorer_explorerNotOnBoat(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
-	explorer1 := NewExplorer()
-	explorer2 := NewExplorer()
+	explorer1 := NewExplorer(1)
+	explorer2 := NewExplorer(1)
 
 	err := boat.BoardExplorer(explorer1)
 	require.NoError(t, err)
@@ -112,8 +112,8 @@ func TestBoatExplorerIndex_explorerOnBoat(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
-	explorer1 := NewExplorer()
-	explorer2 := NewExplorer()
+	explorer1 := NewExplorer(1)
+	explorer2 := NewExplorer(1)
 
 	boat.Explorers = []*Explorer{
 		explorer1,
@@ -128,8 +128,8 @@ func TestBoatExplorerIndex_explorerNotOnBoat(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
-	explorer1 := NewExplorer()
-	explorer2 := NewExplorer()
+	explorer1 := NewExplorer(1)
+	explorer2 := NewExplorer(1)
 
 	assert.Equal(t, boat.ExplorerIndex(explorer1), -1)
 

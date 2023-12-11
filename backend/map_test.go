@@ -319,7 +319,7 @@ func TestMapMoveExplorer_explorerNotOnTile(t *testing.T) {
 func TestMapMoveExplorer_unknownDestinationTile(t *testing.T) {
 	t.Parallel()
 
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 	orgCoord := Coord{Q: 1, R: 1}
 	orgTile := Tile{Type: WATER, Explorers: []*Explorer{explorer}}
 	m := Map{
@@ -336,7 +336,7 @@ func TestMapMoveExplorer_unknownDestinationTile(t *testing.T) {
 func TestMapMoveExplorer_moveFromWaterToLand(t *testing.T) {
 	t.Parallel()
 
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 	orgCoord := Coord{Q: 1, R: 1}
 	orgTile := Tile{Type: WATER, Explorers: []*Explorer{explorer}}
 	destCoord := Coord{Q: 2, R: 2}
@@ -352,10 +352,27 @@ func TestMapMoveExplorer_moveFromWaterToLand(t *testing.T) {
 	require.ErrorContains(t, err, "a swimmer cannot go back to the land")
 }
 
+func TestMapMoveExplorer_sameTile(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: ROCK, Explorers: []*Explorer{explorer}}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveExplorer(orgCoord, orgCoord, explorer.Id)
+	require.ErrorContains(t, err, "explorer already on the tile")
+}
+
 func TestMapMoveExplorer(t *testing.T) {
 	t.Parallel()
 
-	explorer := NewExplorer()
+	explorer := NewExplorer(1)
 	orgCoord := Coord{Q: 1, R: 1}
 	orgTile := Tile{Type: ROCK, Explorers: []*Explorer{explorer}}
 	destCoord := Coord{Q: 2, R: 2}

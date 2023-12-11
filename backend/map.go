@@ -117,10 +117,16 @@ func (m *Map) MoveExplorer(from Coord, to Coord, id int) (Tile, error) {
 		return Tile{}, errors.New("a swimmer cannot go back to the land")
 	}
 
-	originTile.RemoveExplorer(id)
+	_, err := originTile.RemoveExplorer(id)
+	if err != nil {
+		return Tile{}, err
+	}
 	m.tiles[from] = originTile
 
-	destinationTile.AddExplorer(explorer)
+	err = destinationTile.AddExplorer(explorer)
+	if err != nil {
+		return Tile{}, err
+	}
 	m.tiles[to] = destinationTile
 
 	return destinationTile, nil
