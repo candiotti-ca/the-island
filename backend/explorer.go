@@ -5,6 +5,7 @@ package theisland
 // An explorer has 3 steps by lap. Each move to another land tile costs a step. Boarding or Landing on a boat costs a step.
 // Swimming to another tile costs 3 steps
 type Explorer struct {
+	Id         int
 	Eliminated bool
 	MaxSteps   int
 	Team       int
@@ -15,5 +16,6 @@ func NewExplorer() *Explorer {
 		Eliminated: false,
 		MaxSteps:   3,
 		Team:       0,
+		Id:         1,
 	}
 }

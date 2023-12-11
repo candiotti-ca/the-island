@@ -67,7 +67,7 @@ func (m *Map) RemoveLandTile(coord Coord) (Tile, error) {
 	return tile, nil
 }
 
-func (m Map) MoveBoat(from Coord, to Coord) (Tile, error) {
+func (m *Map) MoveBoat(from Coord, to Coord) (Tile, error) {
 	originTile, present := m.tiles[from]
 	if !present {
 		return Tile{}, errors.New("origin coordinates outside the map")
@@ -90,7 +90,40 @@ func (m Map) MoveBoat(from Coord, to Coord) (Tile, error) {
 		return Tile{}, errors.New("destination tile already has a boat")
 	}
 
-	return Tile{}, nil
+	destinationTile.Boat = originTile.Boat
+	m.tiles[to] = destinationTile
+
+	originTile.Boat = nil
+	m.tiles[from] = originTile
+
+	return destinationTile, nil
+}
+
+func (m *Map) MoveExplorer(from Coord, to Coord, id int) (Tile, error) {
+	originTile, present := m.tiles[from]
+	if !present {
+		return Tile{}, errors.New("origin coordinates outside the map")
+	}
+	explorer := originTile.GetExplorer(id)
+	if explorer == nil {
+		return Tile{}, errors.New("explorer not present on this tile")
+	}
+
+	destinationTile, present := m.tiles[to]
+	if !present {
+		return Tile{}, errors.New("destination coordinates outside the map")
+	}
+	if originTile.Type == WATER && destinationTile.Type != WATER {
+		return Tile{}, errors.New("a swimmer cannot go back to the land")
+	}
+
+	originTile.RemoveExplorer(id)
+	m.tiles[from] = originTile
+
+	destinationTile.AddExplorer(explorer)
+	m.tiles[to] = destinationTile
+
+	return destinationTile, nil
 }
 
 type Coord struct {

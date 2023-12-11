@@ -175,7 +175,7 @@ func TestMapRemoveLandTile_rockTile(t *testing.T) {
 	assert.Equal(t, WATER, tile.Type)
 }
 
-func TestBoatMoveToTile_unknownOriginTile(t *testing.T) {
+func TestMapMoveBoat_unknownOriginTile(t *testing.T) {
 	t.Parallel()
 
 	m := Map{
@@ -189,7 +189,7 @@ func TestBoatMoveToTile_unknownOriginTile(t *testing.T) {
 	require.ErrorContains(t, err, "origin coordinates outside the map")
 }
 
-func TestBoatMoveToTile_noBoatOnTile(t *testing.T) {
+func TestMapMoveBoat_noBoatOnTile(t *testing.T) {
 	t.Parallel()
 
 	orgCoord := Coord{Q: 1, R: 1}
@@ -205,7 +205,7 @@ func TestBoatMoveToTile_noBoatOnTile(t *testing.T) {
 	require.ErrorContains(t, err, "no boat on this tile")
 }
 
-func TestBoatMoveToTile_unknownDestinationTile(t *testing.T) {
+func TestMapMoveBoat_unknownDestinationTile(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
@@ -222,7 +222,7 @@ func TestBoatMoveToTile_unknownDestinationTile(t *testing.T) {
 	require.ErrorContains(t, err, "destination coordinates outside the map")
 }
 
-func TestBoatMoveToTile_destinationTileIsNotWater(t *testing.T) {
+func TestMapMoveBoat_destinationTileIsNotWater(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
@@ -241,7 +241,7 @@ func TestBoatMoveToTile_destinationTileIsNotWater(t *testing.T) {
 	require.ErrorContains(t, err, "a boat can move only in water")
 }
 
-func TestBoatMoveToTile_alreadyABoatOnDestinationTile(t *testing.T) {
+func TestMapMoveBoatToTile_alreadyABoatOnDestinationTile(t *testing.T) {
 	t.Parallel()
 
 	boat := NewBoat()
@@ -258,4 +258,122 @@ func TestBoatMoveToTile_alreadyABoatOnDestinationTile(t *testing.T) {
 
 	_, err := m.MoveBoat(orgCoord, destCoord)
 	require.ErrorContains(t, err, "destination tile already has a boat")
+}
+
+func TestMapMoveBoat(t *testing.T) {
+	t.Parallel()
+
+	boat := NewBoat()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER, Boat: boat}
+	destCoord := Coord{Q: 2, R: 2}
+	destTile := Tile{Type: WATER}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile, destCoord: destTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.MoveBoat(orgCoord, destCoord)
+	require.NoError(t, err)
+	assert.Equal(t, boat, result.Boat)
+
+	orgTile = m.tiles[orgCoord]
+	assert.Nil(t, orgTile.Boat)
+
+	destTile = m.tiles[destCoord]
+	assert.Equal(t, boat, destTile.Boat)
+}
+
+func TestMapMoveExplorer_unknownOriginTile(t *testing.T) {
+	t.Parallel()
+
+	m := Map{
+		tiles:           map[Coord]Tile{},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveExplorer(Coord{Q: 1, R: 1}, Coord{Q: 2, R: 2}, 1)
+	require.ErrorContains(t, err, "origin coordinates outside the map")
+}
+
+func TestMapMoveExplorer_explorerNotOnTile(t *testing.T) {
+	t.Parallel()
+
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := NewTile(WATER)
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveExplorer(Coord{Q: 1, R: 1}, Coord{Q: 2, R: 2}, 1)
+	require.ErrorContains(t, err, "explorer not present on this tile")
+}
+
+func TestMapMoveExplorer_unknownDestinationTile(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER, Explorers: []*Explorer{explorer}}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveExplorer(orgCoord, Coord{Q: 2, R: 2}, explorer.Id)
+	require.ErrorContains(t, err, "destination coordinates outside the map")
+}
+
+func TestMapMoveExplorer_moveFromWaterToLand(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: WATER, Explorers: []*Explorer{explorer}}
+	destCoord := Coord{Q: 2, R: 2}
+	destTile := Tile{Type: ROCK}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile, destCoord: destTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.MoveExplorer(orgCoord, destCoord, explorer.Id)
+	require.ErrorContains(t, err, "a swimmer cannot go back to the land")
+}
+
+func TestMapMoveExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer()
+	orgCoord := Coord{Q: 1, R: 1}
+	orgTile := Tile{Type: ROCK, Explorers: []*Explorer{explorer}}
+	destCoord := Coord{Q: 2, R: 2}
+	destTile := Tile{Type: WATER}
+	m := Map{
+		tiles:           map[Coord]Tile{orgCoord: orgTile, destCoord: destTile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.MoveExplorer(orgCoord, destCoord, explorer.Id)
+	require.NoError(t, err)
+	assert.NotNil(t, result.GetExplorer(explorer.Id))
+
+	orgTile = m.tiles[orgCoord]
+	assert.Nil(t, orgTile.GetExplorer(explorer.Id))
+
+	destTile = m.tiles[destCoord]
+	assert.NotNil(t, destTile.GetExplorer(explorer.Id))
 }
