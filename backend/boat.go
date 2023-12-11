@@ -8,16 +8,14 @@ import (
 // 1 boat per tile at a time but can share a tile with monsters or explorers.
 // Moves only in the water
 type Boat struct {
-	Eliminated bool
-	MaxSteps   int
-	Explorers  []*Explorer
+	MaxSteps  int
+	Explorers []*Explorer
 }
 
 func NewBoat() *Boat {
 	return &Boat{
-		Eliminated: false,
-		MaxSteps:   3,
-		Explorers:  make([]*Explorer, 0, 3),
+		MaxSteps:  3,
+		Explorers: make([]*Explorer, 0, 3),
 	}
 }
 
@@ -58,5 +56,5 @@ func (boat *Boat) ExplorerIndex(explorer *Explorer) int {
 
 // TODO eplorers to string
 func (boat Boat) String() string {
-	return fmt.Sprintf("Boat{Eliminated: %t, MaxSteps: %d, Explorers: mystery...}", boat.Eliminated, boat.MaxSteps)
+	return fmt.Sprintf("Boat{MaxSteps: %d, Explorers: mystery...}", boat.MaxSteps)
 }

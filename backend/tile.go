@@ -63,6 +63,29 @@ func (t *Tile) GetExplorer(id int) *Explorer {
 	return nil
 }
 
+func (t *Tile) DestroyBoat() error {
+	if t.Boat == nil {
+		return nil
+	}
+
+	boat := t.Boat
+	for _, explorer := range boat.Explorers {
+		err := t.AddExplorer(explorer)
+		if err != nil {
+			return err
+		}
+	}
+	t.Boat = nil
+
+	return nil
+}
+
+func (t *Tile) KillSwimmers() {
+	if t.Type == WATER {
+		t.Explorers = make([]*Explorer, 0)
+	}
+}
+
 type TileType int
 
 const (

@@ -394,3 +394,190 @@ func TestMapMoveExplorer(t *testing.T) {
 	destTile = m.tiles[destCoord]
 	assert.NotNil(t, destTile.GetExplorer(explorer.Id))
 }
+
+func TestMapResolveInteractions_WhaleBoatExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	boat := NewBoat()
+	err := boat.BoardExplorer(explorer)
+	require.NoError(t, err)
+
+	tile := NewTile(WATER)
+	tile.Boat = boat
+	tile.Whale = NewWhale()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.NotNil(t, result.GetExplorer(explorer.Id))
+	assert.NotNil(t, result.Whale)
+	assert.Nil(t, result.Boat)
+}
+
+func TestMapResolveInteractions_SharkBoatExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	boat := NewBoat()
+	err := boat.BoardExplorer(explorer)
+	require.NoError(t, err)
+
+	tile := NewTile(WATER)
+	tile.Boat = boat
+	tile.Shark = NewShark()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.Nil(t, result.GetExplorer(explorer.Id))
+	assert.NotNil(t, result.Shark)
+	assert.NotNil(t, result.Boat)
+	assert.Equal(t, 1, len(result.Boat.Explorers))
+}
+
+func TestMapResolveInteractions_SeaSerpentBoatExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	boat := NewBoat()
+	err := boat.BoardExplorer(explorer)
+	require.NoError(t, err)
+
+	tile := NewTile(WATER)
+	tile.Boat = boat
+	tile.SeaSerpent = NewSeaSerpent()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.Nil(t, result.GetExplorer(explorer.Id))
+	assert.NotNil(t, result.SeaSerpent)
+	assert.Nil(t, result.Boat)
+}
+
+func TestMapResolveInteractions_SeaSerpentExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	tile := NewTile(WATER)
+	err := tile.AddExplorer(explorer)
+	require.NoError(t, err)
+	tile.SeaSerpent = NewSeaSerpent()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.Nil(t, result.GetExplorer(explorer.Id))
+	assert.NotNil(t, result.SeaSerpent)
+}
+
+func TestMapResolveInteractions_WhaleExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	tile := NewTile(WATER)
+	err := tile.AddExplorer(explorer)
+	require.NoError(t, err)
+	tile.Whale = NewWhale()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.NotNil(t, result.GetExplorer(explorer.Id))
+	assert.NotNil(t, result.Whale)
+}
+
+func TestMapResolveInteractions_SharkExplorer(t *testing.T) {
+	t.Parallel()
+
+	explorer := NewExplorer(1)
+	tile := NewTile(WATER)
+	err := tile.AddExplorer(explorer)
+	require.NoError(t, err)
+	tile.Shark = NewShark()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.Nil(t, result.GetExplorer(explorer.Id))
+	assert.NotNil(t, result.Shark)
+}
+
+func TestMapResolveInteractions_emptyTile(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(WATER)
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	_, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+}
+
+func TestMapResolveInteractions_SeaSerpent(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(WATER)
+	tile.SeaSerpent = NewSeaSerpent()
+
+	coord := Coord{Q: 1, R: 1}
+	m := Map{
+		tiles:           map[Coord]Tile{coord: tile},
+		tileNumberRock:  8,
+		tileNumberSand:  0,
+		tileNumberGrass: 0,
+	}
+
+	result, err := m.ResolveInteractions(coord)
+	require.NoError(t, err)
+	assert.NotNil(t, result.SeaSerpent)
+}

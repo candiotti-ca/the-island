@@ -86,3 +86,58 @@ func TestTileAddExplorer(t *testing.T) {
 	require.ErrorContains(t, err, "explorer already on the tile")
 	assert.Equal(t, 1, len(tile.Explorers))
 }
+
+func TestTileDestroyBoat_noBoat(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(WATER)
+
+	err := tile.DestroyBoat()
+	require.NoError(t, err)
+}
+
+func TestTileDestroyBoat_withoutExplorers(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(WATER)
+	boat := NewBoat()
+	tile.Boat = boat
+
+	err := tile.DestroyBoat()
+	require.NoError(t, err)
+}
+
+func TestTileDestroyBoat_withExplorers(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(WATER)
+	boat := NewBoat()
+	boat.Explorers = append(boat.Explorers, NewExplorer(1))
+	tile.Boat = boat
+
+	err := tile.DestroyBoat()
+	require.NoError(t, err)
+	assert.Equal(t, 1, len(tile.Explorers))
+}
+
+func TestTileKillSwimmers_landTile(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(ROCK)
+	err := tile.AddExplorer(NewExplorer(1))
+	assert.NoError(t, err)
+
+	tile.KillSwimmers()
+	assert.Equal(t, 1, len(tile.Explorers))
+}
+
+func TestTileKillSwimmers(t *testing.T) {
+	t.Parallel()
+
+	tile := NewTile(WATER)
+	err := tile.AddExplorer(NewExplorer(1))
+	assert.NoError(t, err)
+
+	tile.KillSwimmers()
+	assert.Equal(t, 0, len(tile.Explorers))
+}

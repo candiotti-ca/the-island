@@ -132,6 +132,27 @@ func (m *Map) MoveExplorer(from Coord, to Coord, id int) (Tile, error) {
 	return destinationTile, nil
 }
 
+func (m *Map) ResolveInteractions(coord Coord) (Tile, error) {
+	tile, present := m.tiles[coord]
+	if !present {
+		return Tile{}, errors.New("coordinates outside the map")
+	}
+
+	if tile.SeaSerpent != nil || tile.Whale != nil {
+		err := tile.DestroyBoat()
+		if err != nil {
+			return Tile{}, err
+		}
+	}
+
+	if tile.SeaSerpent != nil || tile.Shark != nil {
+		tile.KillSwimmers()
+	}
+
+	m.tiles[coord] = tile
+	return tile, nil
+}
+
 type Coord struct {
 	Q, R int
 }
