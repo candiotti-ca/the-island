@@ -40,7 +40,10 @@ func (m Map) GetTile(coord Coord) Tile {
 }
 
 func (m *Map) RemoveLandTile(coord Coord) (Tile, error) {
-	tile := m.tiles[coord]
+	tile, present := m.tiles[coord]
+	if !present {
+		return Tile{}, errors.New("coordinates outside the map")
+	}
 
 	switch tile.Type {
 	case WATER:
