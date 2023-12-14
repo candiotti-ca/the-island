@@ -1,14 +1,21 @@
+<script lang="ts">
+	export let top: number = 0;
+	export let left: number = 0;
+</script>
+
 <svg
-	fill="#4388da"
-	height="200px"
-	width="200px"
+	style="top:{top + 28}px; left:{left + 23}px;"
+	class="absolute z-30"
+	fill="#f00"
+	height="18px"
+	width="18px"
 	version="1.1"
 	id="Layer_1"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 0 395.564 395.564"
 	xml:space="preserve"
-	stroke="#4388da"
+	stroke="#f00"
 	><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
 		id="SVGRepo_tracerCarrier"
 		stroke-linecap="round"

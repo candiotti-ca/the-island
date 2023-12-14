@@ -1,13 +1,20 @@
+<script lang="ts">
+	export let top: number = 0;
+	export let left: number = 0;
+</script>
+
 <svg
-	height="200px"
-	width="200px"
+	style="top:{top - 10}px; left:{left + 25}px;"
+	class="absolute z-10"
+	height="18px"
+	width="18px"
 	version="1.1"
 	id="_x32_"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 0 512 512"
 	xml:space="preserve"
-	fill="#4388da"
+	fill="#0f0"
 	><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
 		id="SVGRepo_tracerCarrier"
 		stroke-linecap="round"
@@ -15,7 +22,7 @@
 	></g><g id="SVGRepo_iconCarrier">
 		<style type="text/css">
 			.st0 {
-				fill: #4388da;
+				fill: #0f0;
 			}
 		</style>
 		<g>

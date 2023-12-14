@@ -5,7 +5,7 @@
 	import waterTexture from '../assets/water.jpg';
 	import { TileType } from '../models/TileType';
 
-	const size = 50;
+	const size = 80;
 	const width = size * 0.8;
 	const height = size * 0.46;
 
@@ -14,7 +14,7 @@
 	export let type: TileType = TileType.WATER;
 
 	$: top = () => {
-		const middleOfTheMap = 250;
+		const middleOfTheMap = 400;
 
 		return height * ((3 / 2) * r) + middleOfTheMap;
 	};
@@ -24,7 +24,7 @@
 	 * pointy top or flat top and whether the map is odd or even.
 	 */
 	$: left = () => {
-		const middleOfTheMap = 600;
+		const middleOfTheMap = 850;
 
 		return height * (Math.sqrt(3) * q + (Math.sqrt(3) / 2) * r) + middleOfTheMap;
 	};

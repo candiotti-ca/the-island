@@ -51,7 +51,7 @@
 	}
 </script>
 
-<div class="bg-black h-[600px] relative">
+<div class="h-full relative">
 	{#each tiles as tile}
 		<TileComponent {...tile} on:click={() => flipTile(tile)} />
 	{/each}

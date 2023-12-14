@@ -1,4 +1,16 @@
-<svg viewBox="0 -1.8 20 20" xmlns="http://www.w3.org/2000/svg" fill="#000000"
+<script lang="ts">
+	export let top: number = 0;
+	export let left: number = 0;
+</script>
+
+<svg
+	style="top:{top}px; left:{left + 7}px;"
+	class="absolute z-20"
+	height="50px"
+	width="50px"
+	viewBox="0 -1.8 20 20"
+	xmlns="http://www.w3.org/2000/svg"
+	fill="#000000"
 	><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
 		id="SVGRepo_tracerCarrier"
 		stroke-linecap="round"
