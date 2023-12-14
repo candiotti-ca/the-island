@@ -3,6 +3,7 @@
 	import TileComponent from '../components/TileComponent.svelte';
 	import type { Tile } from '../models/Tile';
 	import type { TileType } from '../models/TileType';
+	import SharkComponent from '../components/SharkComponent.svelte';
 
 	let tiles: Tile[] = [];
 
@@ -17,7 +18,8 @@
 					return {
 						q: coord[0],
 						r: coord[1],
-						type
+						type,
+						explorers: [] //TODO
 					};
 				})
 			)
@@ -51,3 +53,5 @@
 		<TileComponent {...tile} on:click={() => flipTile(tile)} />
 	{/each}
 </div>
+
+<SharkComponent />
