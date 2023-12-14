@@ -4,6 +4,9 @@
 	import type { Tile } from '../models/Tile';
 	import type { TileType } from '../models/TileType';
 	import SharkComponent from '../components/SharkComponent.svelte';
+	import WhaleComponent from '../components/WhaleComponent.svelte';
+	import BoatComponent from '../components/BoatComponent.svelte';
+	import SeaSerpentComponent from '../components/SeaSerpentComponent.svelte';
 
 	let tiles: Tile[] = [];
 
@@ -53,5 +56,3 @@
 		<TileComponent {...tile} on:click={() => flipTile(tile)} />
 	{/each}
 </div>
-
-<SharkComponent />
