@@ -96,6 +96,11 @@ func (m *Map) MoveBoat(from Coord, to Coord) (Tile, error) {
 	originTile.Boat = nil
 	m.tiles[from] = originTile
 
+	destinationTile, err := m.ResolveInteractions(to)
+	if err != nil {
+		return Tile{}, errors.New("unable to resolve interactions")
+	}
+
 	return destinationTile, nil
 }
 
@@ -206,7 +211,7 @@ func initTiles(seed int64) map[Coord]Tile {
 		} else {
 			tileType = WATER
 		}
-		tiles[Coord{Q: hex.Q, R: hex.R}] = NewTile(tileType)
+		tiles[Coord{Q: hex.Q, R: hex.R}] = NewTile(WithTileType(tileType))
 	}
 
 	sixthRing := singleRing(direction, 6)
@@ -214,17 +219,17 @@ func initTiles(seed int64) map[Coord]Tile {
 		if hex.R == 0 && (hex.Q == 6 || hex.Q == -6) {
 			continue
 		}
-		tiles[Coord{Q: hex.Q, R: hex.R}] = NewTile(WATER)
+		tiles[Coord{Q: hex.Q, R: hex.R}] = NewTile()
 	}
 
-	tiles[Coord{Q: 2, R: 5}] = NewTile(WATER)
-	tiles[Coord{Q: 3, R: 4}] = NewTile(WATER)
-	tiles[Coord{Q: 7, R: -5}] = NewTile(WATER)
-	tiles[Coord{Q: 7, R: -4}] = NewTile(WATER)
-	tiles[Coord{Q: -3, R: -4}] = NewTile(WATER)
-	tiles[Coord{Q: -2, R: -5}] = NewTile(WATER)
-	tiles[Coord{Q: -7, R: 5}] = NewTile(WATER)
-	tiles[Coord{Q: -7, R: 4}] = NewTile(WATER)
+	tiles[Coord{Q: 2, R: 5}] = NewTile()
+	tiles[Coord{Q: 3, R: 4}] = NewTile()
+	tiles[Coord{Q: 7, R: -5}] = NewTile()
+	tiles[Coord{Q: 7, R: -4}] = NewTile()
+	tiles[Coord{Q: -3, R: -4}] = NewTile()
+	tiles[Coord{Q: -2, R: -5}] = NewTile()
+	tiles[Coord{Q: -7, R: 5}] = NewTile(WithSeaSerpent())
+	tiles[Coord{Q: -7, R: 4}] = NewTile(WithBoat())
 
 	return tiles
 }

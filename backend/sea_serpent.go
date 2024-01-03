@@ -1,19 +1,19 @@
 package theisland
 
-import "fmt"
+import (
+	"github.com/google/uuid"
+)
 
 // Destroys a boat if it was occupied by explorers. Eats each explorer in the water or on the boat.
 // Moves only in the water
 type SeaSerpent struct {
-	MaxSteps int
+	Id       uuid.UUID `json:"id"`
+	MaxSteps int       `json:"maxSteps"`
 }
 
 func NewSeaSerpent() *SeaSerpent {
 	return &SeaSerpent{
+		Id:       uuid.New(),
 		MaxSteps: 1,
 	}
-}
-
-func (seaSerpent SeaSerpent) String() string {
-	return fmt.Sprintf("SeaSerpent{MaxSteps: %d}", seaSerpent.MaxSteps)
 }

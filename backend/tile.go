@@ -3,9 +3,12 @@ package theisland
 import (
 	"errors"
 	"slices"
+
+	"github.com/google/uuid"
 )
 
 type Tile struct {
+	Id         uuid.UUID   `json:"id"`
 	Type       TileType    `json:"type"`
 	Explorers  []*Explorer `json:"explorers"`
 	Boat       *Boat       `json:"boat"`
@@ -14,8 +17,50 @@ type Tile struct {
 	SeaSerpent *SeaSerpent `json:"seaSerpent"`
 }
 
-func NewTile(tileType TileType) Tile {
-	return Tile{Type: tileType, Explorers: make([]*Explorer, 0)}
+type Option func(o *Tile)
+
+func NewTile(opts ...Option) Tile {
+	tile := &Tile{
+		Id:        uuid.New(),
+		Type:      WATER,
+		Explorers: make([]*Explorer, 0),
+	}
+
+	for _, opt := range opts {
+		opt(tile)
+	}
+
+	return *tile
+}
+
+func WithTileType(tileType TileType) Option {
+	return func(o *Tile) {
+		o.Type = tileType
+	}
+}
+
+func WithBoat() Option {
+	return func(o *Tile) {
+		o.Boat = NewBoat()
+	}
+}
+
+func WithWhale() Option {
+	return func(o *Tile) {
+		o.Whale = NewWhale()
+	}
+}
+
+func WithShark() Option {
+	return func(o *Tile) {
+		o.Shark = NewShark()
+	}
+}
+
+func WithSeaSerpent() Option {
+	return func(o *Tile) {
+		o.SeaSerpent = NewSeaSerpent()
+	}
 }
 
 func (t *Tile) RemoveExplorer(id int) (*Explorer, error) {

@@ -2,18 +2,21 @@ package theisland
 
 import (
 	"errors"
-	"fmt"
+
+	"github.com/google/uuid"
 )
 
 // 1 boat per tile at a time but can share a tile with monsters or explorers.
 // Moves only in the water
 type Boat struct {
-	MaxSteps  int
-	Explorers []*Explorer
+	Id        uuid.UUID   `json:"id"`
+	MaxSteps  int         `json:"maxSteps"`
+	Explorers []*Explorer `json:"explorers"`
 }
 
 func NewBoat() *Boat {
 	return &Boat{
+		Id:        uuid.New(),
 		MaxSteps:  3,
 		Explorers: make([]*Explorer, 0, 3),
 	}
@@ -52,9 +55,4 @@ func (boat *Boat) ExplorerIndex(explorer *Explorer) int {
 	}
 
 	return explorerIndex
-}
-
-// TODO eplorers to string
-func (boat Boat) String() string {
-	return fmt.Sprintf("Boat{MaxSteps: %d, Explorers: mystery...}", boat.MaxSteps)
 }
